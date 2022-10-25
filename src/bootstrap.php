@@ -124,6 +124,9 @@ if ( ! function_exists('GitLabAutoSync_clean_directory'))
 			if (in_array($file, ['.', '..']))
 				continue;
 
+			if (preg_match('/^GitLabAutoSync/i', $file))
+				continue;
+
 			$file = $directory . DS . $file;
 
 			if (is_dir($file))

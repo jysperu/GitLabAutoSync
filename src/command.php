@@ -39,6 +39,7 @@ foreach ($config as $var => $val)
 	if (empty($val))
 	{
 		GitLabAutoSync_print('Parámetro faltante "' . $var . '", favor ingreselo o vacío para cancelar el proceso.');
+
 		$val = GitLabAutoSync_Command_promt();
 
 		GitLabAutoSync_print('');

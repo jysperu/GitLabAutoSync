@@ -36,7 +36,12 @@ if ($action === 'SaveConfig')
 	$newconfig = (array) $newconfig;
 
 	foreach ($newconfig as $key => $val)
+	{
+		if ($key === 'outputdir' and $val === '__DIR__')
+			$val = dirname($_SERVER['SCRIPT_FILENAME']);
+
 		$config[$key] = $val;
+	}
 
 	GitLabAutoSync_save_config();
 }
@@ -81,6 +86,10 @@ if (count($faltan) > 0)
 						<div class="form-group mb-2">
 							<label>Ingrese parámetro <code>"<?= $key; ?>"</code></label>
 							<input type="text" name="config[<?= $key; ?>]" placeholder="<?= $key; ?>" class="form-control" />
+
+							<?php if ($key === 'outputdir') : ?>
+							<small class="text-muted">Ingrese <code>__DIR__</code> si desea que se asigne el directorio del archivo ejecutado.</small>
+							<?php endif; ?>
 						</div>
 						<?php endforeach; ?>
 

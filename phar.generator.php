@@ -12,14 +12,19 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('PHAR_SOURCE') or define('PHAR_SOURCE', __DIR__ . '/src');
 defined('PHAR_OUTPUT') or define('PHAR_OUTPUT', __DIR__ . '/dist/GitLabAutoSync.phar');
 
+defined('PHAR_OUTPUT_gz')  or define('PHAR_OUTPUT_gz',  PHAR_OUTPUT . '.gz');
+defined('PHAR_OUTPUT_dn')  or define('PHAR_OUTPUT_dn',  dirname(PHAR_OUTPUT));
+defined('PHAR_OUTPUT_php') or define('PHAR_OUTPUT_php', PHAR_OUTPUT_dn . DS . basename(PHAR_OUTPUT, '.phar') . '.php');
+defined('PHAR_OUTPUT_zip') or define('PHAR_OUTPUT_zip', PHAR_OUTPUT_dn . DS . 'glas.v' . filemtime(__DIR__) . '.zip');
+
 
 //=== CLEANING
 
 if (file_exists(PHAR_OUTPUT))
 	unlink(PHAR_OUTPUT);
 
-if (file_exists(PHAR_OUTPUT . '.gz'))
-	unlink(PHAR_OUTPUT . '.gz');
+if (file_exists(PHAR_OUTPUT_gz))
+	unlink(PHAR_OUTPUT_gz);
 
 
 //=== CREATING PHAR
@@ -37,36 +42,15 @@ if (file_exists(PHAR_OUTPUT))
 //=== CRATING INDEX.PHP
 $index_content = '<?php' . PHP_EOL;
 $index_content.= 'chdir(__DIR__);' . PHP_EOL;
-$index_content.= 'defined(\'GitLabAutoSync_CONFIGFILE\') or define(\'GitLabAutoSync_CONFIGFILE\', __DIR__ . \'/config.php\');' . PHP_EOL;
-$index_content.= 'return require_once \'phar://' . basename(PHAR_OUTPUT) . '.gz\';' . PHP_EOL;
+$index_content.= 'defined(\'GitLabAutoSync_CONFIGFILE\') or define(\'GitLabAutoSync_CONFIGFILE\', __DIR__ . \'/GitLabAutoSync.config.php\');' . PHP_EOL;
+$index_content.= 'return require_once \'phar://' . basename(PHAR_OUTPUT_gz) . '\';' . PHP_EOL;
 
-file_put_contents(dirname(PHAR_OUTPUT) . DS . basename(PHAR_OUTPUT, '.phar') . '.php', $index_content);
+file_put_contents(PHAR_OUTPUT_php, $index_content);
 
+$zip = new ZipArchive;
+$zip->open(PHAR_OUTPUT_zip, ZipArchive::CREATE);
 
-//=== HELPERS
+$zip->addFile(PHAR_OUTPUT_gz,  basename(PHAR_OUTPUT_gz));
+$zip->addFile(PHAR_OUTPUT_php, basename(PHAR_OUTPUT_php));
 
-function PharAddDirFilesRecursive (Phar $phar, string $directory)
-{
-	$files = scandir($directory);
-
-	foreach ($files as $file)
-	{
-		if (in_array($file, ['.', '..']))
-			continue;
-
-		$file = $directory . DS . $file;
-
-		if (is_dir($file))
-		{
-			PharAddDirFilesRecursive($phar, $file);
-			continue;
-		}
-
-		$filename = str_replace(PHAR_SOURCE, '', $file);
-		$filename = str_replace(DS, '/', $filename);
-		$filename = ltrim($filename, '/');
-
-		$phar->addFile($file, $filename);
-		echo $file . ' -> ' . $filename . PHP_EOL;
-	}
-}
+$zip->close();
