@@ -28,22 +28,6 @@ spl_autoload_register(function($class) {
 		return require_once $file;;
 
 	return;
-
-	//=== Omited:
-
-	$backtrace = debug_backtrace(false);
-	array_shift($backtrace); ## this
-
-	$first = array_shift($backtrace);
-	if (isset($first['function']) and in_array($first['function'], ['class_exists', 'interface_exists']))
-		return;
-
-	GitLabAutoSync_print ('File Not Found => ' . $file);
-	GitLabAutoSync_print ((IS_COMMAND ?: '<pre>') . json_encode($first, JSON_PRETTY_PRINT) . (IS_COMMAND ?: '</pre>'));
-	GitLabAutoSync_print ((IS_COMMAND ?: '<pre>') . json_encode(array_shift($backtrace), JSON_PRETTY_PRINT) . (IS_COMMAND ?: '</pre>'));
-
-//	if ( ! class_exists($class, false))
-//		GitLabAutoSync_print ('No class loaded => ' . $file);
 });
 
 set_exception_handler(function(Throwable $ex){

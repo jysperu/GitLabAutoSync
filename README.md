@@ -39,7 +39,7 @@ You need to set the branch what will synced
 
 ### Use
 
-1. Download the file "dist/glas.v20221025185800.zip" on your public_html
+1. Download the file "dist/glas.v20221026.zip" on your public_html
 2. Unzip the file
 3. Now you have 02 files (GitLabAutoSync.phar.gz and GitLabAutoSync.php)
 4. If you want to use it as command:
