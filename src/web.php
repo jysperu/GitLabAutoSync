@@ -223,7 +223,7 @@ exit;
 //=== Sync Files
 sync_process:
 
-@chdir(GitLabAutoSync_HOMEPATH);
+//@chdir(GitLabAutoSync_HOMEPATH);
 require 'sync.php';
 
 if ($action === 'AutoSync')
