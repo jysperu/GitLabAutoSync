@@ -43,7 +43,7 @@ if (file_exists(PHAR_OUTPUT))
 $index_content = '<?php' . PHP_EOL;
 $index_content.= 'chdir(__DIR__);' . PHP_EOL;
 $index_content.= 'defined(\'GitLabAutoSync_CONFIGFILE\') or define(\'GitLabAutoSync_CONFIGFILE\', __DIR__ . \'/GitLabAutoSync.config.php\');' . PHP_EOL;
-$index_content.= 'return require_once \'phar://' . basename(PHAR_OUTPUT_gz) . '\';' . PHP_EOL;
+$index_content.= 'return require_once \'phar://./' . basename(PHAR_OUTPUT_gz) . '\';' . PHP_EOL;
 
 file_put_contents(PHAR_OUTPUT_php, $index_content);
 

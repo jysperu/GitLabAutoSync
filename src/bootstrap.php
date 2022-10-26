@@ -5,36 +5,63 @@ if (defined('GitLabAutoSync_HOMEPATH'))
 
 define('GitLabAutoSync_HOMEPATH', dirname(__FILE__));
 
-@error_reporting(-1);
+@error_reporting(E_ALL);
 
 while(@ob_get_level())
 	@ob_end_clean();
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('BS') or define('BS', '\\');
 defined('IS_COMMAND') or define('IS_COMMAND', PHP_SAPI === 'cli');
 
 @chdir(GitLabAutoSync_HOMEPATH);
 
 spl_autoload_register(function($class) {
-	$class = trim($class, '\\');
-	$parts = explode('\\', $class);
+	$parts = trim($class, BS);
+	$parts = explode(BS, $parts);
+	$parts = implode(DS, $parts);
 
-	$srcpath = GitLabAutoSync_HOMEPATH . DS . 'lib';
+//	@chdir (GitLabAutoSync_HOMEPATH);
+	$file = GitLabAutoSync_HOMEPATH . DS . 'lib' . DS . $parts . '.php';
 
-	$classpath = $srcpath . DS . $class . '.php';
+	if (file_exists($file))
+		return require_once $file;;
 
-	if ( ! file_exists($classpath))
+	return;
+
+	//=== Omited:
+
+	$backtrace = debug_backtrace(false);
+	array_shift($backtrace); ## this
+
+	$first = array_shift($backtrace);
+	if (isset($first['function']) and in_array($first['function'], ['class_exists', 'interface_exists']))
 		return;
 
-	require_once $classpath;
+	GitLabAutoSync_print ('File Not Found => ' . $file);
+	GitLabAutoSync_print ((IS_COMMAND ?: '<pre>') . json_encode($first, JSON_PRETTY_PRINT) . (IS_COMMAND ?: '</pre>'));
+	GitLabAutoSync_print ((IS_COMMAND ?: '<pre>') . json_encode(array_shift($backtrace), JSON_PRETTY_PRINT) . (IS_COMMAND ?: '</pre>'));
+
+//	if ( ! class_exists($class, false))
+//		GitLabAutoSync_print ('No class loaded => ' . $file);
 });
 
 set_exception_handler(function(Throwable $ex){
-	echo '[Error] ' . $ex -> getMessage();
+	echo '[Excepción] ' . $ex -> getMessage();
 	echo IS_COMMAND ? PHP_EOL : '<br>';
 	echo str_replace(GitLabAutoSync_HOMEPATH, '', $ex->getFile()) . '#' . $ex->getLine();
+	echo IS_COMMAND ? PHP_EOL : '<br>';
 	exit;
 });
+
+set_error_handler(function(int $errno, string $errstr, string $errfile = null, int $errline = null, array $errcontext = []) {
+	echo '[Error] ' . $errstr;
+	echo IS_COMMAND ? PHP_EOL : '<br>';
+	echo str_replace(GitLabAutoSync_HOMEPATH, '', $errfile) . '#' . $errline;
+	echo IS_COMMAND ? PHP_EOL : '<br>';
+	echo '<pre>', print_r($errcontext, true), '</pre>';
+	echo IS_COMMAND ? PHP_EOL : '<br>';
+}, E_ALL);
 
 $config = [
 	'httptoken' => '',
@@ -88,6 +115,8 @@ if ( ! function_exists('GitLabAutoSync_print'))
 
 		if (IS_COMMAND)
 			echo PHP_EOL;
+		else
+			echo '<br>';
 	}
 }
 
@@ -188,7 +217,7 @@ if ( ! file_exists('GitLabAutoSync_zip_extract_to'))
 				continue;
 
 			$relative_path = substr($filename, mb_strlen($subdir));
-			$relative_path = str_replace(['/', '\\'], DS, $relative_path);
+			$relative_path = str_replace(['/', BS], DS, $relative_path);
 
 			
             if (mb_strlen($relative_path) === 0)
