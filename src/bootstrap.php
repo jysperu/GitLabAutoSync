@@ -1,5 +1,10 @@
 <?php
 
+if (defined('GitLabAutoSync_HOMEPATH'))
+	return;
+
+define('GitLabAutoSync_HOMEPATH', dirname(__FILE__));
+
 @error_reporting(-1);
 
 while(@ob_get_level())
@@ -8,7 +13,6 @@ while(@ob_get_level())
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('IS_COMMAND') or define('IS_COMMAND', PHP_SAPI === 'cli');
 
-defined('GitLabAutoSync_HOMEPATH') or define('GitLabAutoSync_HOMEPATH', dirname(__FILE__));
 @chdir(GitLabAutoSync_HOMEPATH);
 
 spl_autoload_register(function($class) {
@@ -25,10 +29,18 @@ spl_autoload_register(function($class) {
 	require_once $classpath;
 });
 
+set_exception_handler(function(Throwable $ex){
+	echo '[Error] ' . $ex -> getMessage();
+	echo IS_COMMAND ? PHP_EOL : '<br>';
+	echo str_replace(GitLabAutoSync_HOMEPATH, '', $ex->getFile()) . '#' . $ex->getLine();
+	exit;
+});
+
 $config = [
 	'httptoken' => '',
 	'projectid' => '',
 	'outputdir' => '',
+	'branch'    => '',
 ];
 
 defined('GitLabAutoSync_CONFIGFILE') or define('GitLabAutoSync_CONFIGFILE', GitLabAutoSync_HOMEPATH . '/config.php');

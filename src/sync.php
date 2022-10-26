@@ -6,7 +6,9 @@ $client->authenticate($config['httptoken'], Gitlab\Client::AUTH_HTTP_TOKEN);
 
 $zipcontent = $client
 	-> repositories()
-	-> archive ($config['projectid'], [], 'zip');
+	-> archive ($config['projectid'], [
+		'sha' => $config['branch'],
+	], 'zip');
 
 if ( ! file_exists($config['outputdir']))
 	@mkdir($config['outputdir'], 0755, true);

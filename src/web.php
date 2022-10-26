@@ -88,7 +88,11 @@ if (count($faltan) > 0)
 							<input type="text" name="config[<?= $key; ?>]" placeholder="<?= $key; ?>" class="form-control" />
 
 							<?php if ($key === 'outputdir') : ?>
-							<small class="text-muted">Ingrese <code>__DIR__</code> si desea que se asigne el directorio del archivo ejecutado.</small>
+							<small class="text-muted user-select-none">Ingrese <code class="user-select-all">__DIR__</code> si desea que se asigne el directorio del archivo ejecutado.</small>
+							<?php endif; ?>
+
+							<?php if ($key === 'branch') : ?>
+							<small class="text-muted user-select-none">La rama por defecto es <code class="user-select-all">main</code>.</small>
 							<?php endif; ?>
 						</div>
 						<?php endforeach; ?>

@@ -40,6 +40,9 @@ foreach ($config as $var => $val)
 	{
 		GitLabAutoSync_print('Parámetro faltante "' . $var . '", favor ingreselo o vacío para cancelar el proceso.');
 
+		if($var === 'branch')
+			GitLabAutoSync_print('La rama por defecto en GitLab es "main".');
+
 		$val = GitLabAutoSync_Command_promt();
 
 		GitLabAutoSync_print('');
@@ -59,6 +62,8 @@ if ($promted > 0)
 
 	if (preg_match('/^(y|s|t|1)/i', $val))
 		GitLabAutoSync_save_config();
+
+	GitLabAutoSync_print('');
 }
 
 @chdir(GitLabAutoSync_HOMEPATH);
