@@ -43,11 +43,11 @@ You need to set the branch what will synced
 2. Unzip the file
 3. Now you have 02 files (GitLabAutoSync.phar.gz and GitLabAutoSync.php)
 4. If you want to use it as command:
-	a. Use the command `php GitLabAutoSync.php`
-	b. If is the firsttime the script will require the config info, then you can save it
-	c. The script will sync the repository of GitLab into the output_dir (normally your public_html path)
+	1. Use the command `php GitLabAutoSync.php`
+	2. If is the firsttime the script will require the config info, then you can save it
+	3. The script will sync the repository of GitLab into the output_dir (normally your public_html path)
 5. If you want to use it as a web
-	a. Access to https://yourweb.com/GitLabAutoSync.php (replace yourweb.com to your domain)
-	b. If is the firsttime the web will require the config info, it will be saved (then you need to refresh the page)
-	c. The web ask you if you want to add a webhook in GitLab Project for auto-sync, is recommended set it true (then you need to refresh the page)
-	d. Anytime you access to this web, the repository of GitLab will be synced into the output_dir (normally the same public_html path)
+	1. Access to https://yourweb.com/GitLabAutoSync.php (replace yourweb.com to your domain)
+	2. If is the firsttime the web will require the config info, it will be saved (then you need to refresh the page)
+	3. The web ask you if you want to add a webhook in GitLab Project for auto-sync, is recommended set it true (then you need to refresh the page)
+	4. Anytime you access to this web, the repository of GitLab will be synced into the output_dir (normally the same public_html path)
