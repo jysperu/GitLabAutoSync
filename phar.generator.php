@@ -14,7 +14,7 @@ defined('PHAR_OUTPUT') or define('PHAR_OUTPUT', __DIR__ . '/dist/GitLabAutoSync.
 
 defined('PHAR_OUTPUT_dn')  or define('PHAR_OUTPUT_dn',  dirname(PHAR_OUTPUT));
 defined('PHAR_OUTPUT_php') or define('PHAR_OUTPUT_php', PHAR_OUTPUT_dn . DS . basename(PHAR_OUTPUT, '.phar') . '.php');
-defined('PHAR_OUTPUT_zip') or define('PHAR_OUTPUT_zip', PHAR_OUTPUT_dn . DS . 'glas.v' . date('Ymd', filemtime(__DIR__)) . '.zip');
+defined('PHAR_OUTPUT_zip') or define('PHAR_OUTPUT_zip', PHAR_OUTPUT_dn . DS . 'glas.v' . date('Ymd', filemtime(PHAR_SOURCE)) . '.zip');
 
 
 //=== CLEANING

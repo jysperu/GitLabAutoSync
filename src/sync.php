@@ -24,7 +24,9 @@ file_put_contents($zipfile, $zipcontent);
 
 GitLabAutoSync_print ('[Sincronización] Descomprimiendo ZIP');
 
-GitLabAutoSync_clean_directory ($config['outputdir']);
+if ((int) $config['clean_dir'])
+	GitLabAutoSync_clean_directory ($config['outputdir']);
+
 GitLabAutoSync_zip_extract_to  ($zipfile, $config['outputdir']);
 
 GitLabAutoSync_print ('[Sincronización] Eliminando ZIP');
