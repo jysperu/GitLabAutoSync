@@ -52,7 +52,7 @@ $config = [
 	'projectid' => '',
 	'outputdir' => '',
 	'branch'    => '',
-	'clean_dir' => '1',
+	'clean_dir' => 'yes',
 ];
 
 defined('GitLabAutoSync_CONFIGFILE') or define('GitLabAutoSync_CONFIGFILE', GitLabAutoSync_HOMEPATH . '/config.php');
@@ -279,4 +279,4 @@ if ( ! function_exists('getallheaders'))
 
 }
 
-return require (IS_COMMAND ? 'command' : 'web') . '.php';
+return require GitLabAutoSync_HOMEPATH . DS . (IS_COMMAND ? 'command' : 'web') . '.php';
