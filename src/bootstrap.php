@@ -279,4 +279,4 @@ if ( ! function_exists('getallheaders'))
 
 }
 
-return require (IS_COMMAND ? 'command' : 'web') . '.php';
+return require GitLabAutoSync_HOMEPATH . DS . (IS_COMMAND ? 'command' : 'web') . '.php';
