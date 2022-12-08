@@ -52,7 +52,7 @@ $config = [
 	'projectid' => '',
 	'outputdir' => '',
 	'branch'    => '',
-	'clean_dir' => '1',
+	'clean_dir' => 'yes',
 ];
 
 defined('GitLabAutoSync_CONFIGFILE') or define('GitLabAutoSync_CONFIGFILE', GitLabAutoSync_HOMEPATH . '/config.php');
