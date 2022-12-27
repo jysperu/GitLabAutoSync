@@ -14,6 +14,14 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('BS') or define('BS', '\\');
 defined('IS_COMMAND') or define('IS_COMMAND', PHP_SAPI === 'cli');
 
+if ( ! (PHP_VERSION_ID >= 80100))
+{
+	echo '[PHP Version] Requerido >= 8.1.0';
+	echo IS_COMMAND ? PHP_EOL : '<br>';
+	echo 'Actualmente: ' . PHP_VERSION;
+	exit;
+}
+
 @chdir(GitLabAutoSync_HOMEPATH);
 
 spl_autoload_register(function($class) {
@@ -279,4 +287,7 @@ if ( ! function_exists('getallheaders'))
 
 }
 
-return require GitLabAutoSync_HOMEPATH . DS . (IS_COMMAND ? 'command' : 'web') . '.php';
+if ( ! file_exists(GitLabAutoSync_HOMEPATH))
+	throw new Exception(GitLabAutoSync_HOMEPATH . ' no existe');
+
+return require_once GitLabAutoSync_HOMEPATH . DS . (IS_COMMAND ? 'command' : 'web') . '.php';

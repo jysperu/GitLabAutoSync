@@ -31,10 +31,14 @@ $phar->setStub('<?php return include (\'phar://\' . __FILE__ . \'/bootstrap.php\
 
 
 //=== CRATING INDEX.PHP
-$index_content = '<?php' . PHP_EOL;
+$index_content = '<?php //== ' . date('Y-m-d h:i:s A') . PHP_EOL;
 $index_content.= 'ini_set(\'display_errors\', 1);' . PHP_EOL;
 $index_content.= 'ini_set(\'display_startup_errors\', 1);' . PHP_EOL;
 $index_content.= 'error_reporting(E_ALL);' . PHP_EOL;
+$index_content.= '' . PHP_EOL;
+$index_content.= 'header(\'Cache-Control: no-store, no-cache, must-revalidate, max-age=0\');' . PHP_EOL;
+$index_content.= 'header(\'Cache-Control: post-check=0, pre-check=0\', false);' . PHP_EOL;
+$index_content.= 'header(\'Pragma: no-cache\');' . PHP_EOL;
 $index_content.= '' . PHP_EOL;
 $index_content.= 'chdir(__DIR__);' . PHP_EOL;
 $index_content.= 'defined(\'GitLabAutoSync_CONFIGFILE\') or define(\'GitLabAutoSync_CONFIGFILE\', __DIR__ . \'/GitLabAutoSync.config.php\');' . PHP_EOL;

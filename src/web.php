@@ -224,7 +224,7 @@ exit;
 sync_process:
 
 //@chdir(GitLabAutoSync_HOMEPATH);
-require 'sync.php';
+require_once GitLabAutoSync_HOMEPATH . DS . 'sync.php';
 
 if ($action === 'AutoSync')
 	die(date('d/m/Y h:i:s A'));

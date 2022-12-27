@@ -67,4 +67,4 @@ if ($promted > 0)
 }
 
 @chdir(GitLabAutoSync_HOMEPATH);
-return require 'sync.php';
+require_once GitLabAutoSync_HOMEPATH . DS . 'sync.php';
